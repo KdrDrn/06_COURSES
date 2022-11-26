@@ -1,0 +1,9 @@
+setup.py
+distributions/__init__.py
+distributions/gaussiandistribution.py
+distributions/generaldistribution.py
+distributions.egg-info/PKG-INFO
+distributions.egg-info/SOURCES.txt
+distributions.egg-info/dependency_links.txt
+distributions.egg-info/not-zip-safe
+distributions.egg-info/top_level.txt
