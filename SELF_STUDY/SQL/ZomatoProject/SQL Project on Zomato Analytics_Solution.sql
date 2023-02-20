@@ -60,60 +60,87 @@ select * from users;
 
 1 ---- what is total amount each customer spent on zomato ?
 
-select a.userid,sum(b.price) total_amt_spent from sales a inner join product b on a.product_id=b.product_id
+select	a.userid,
+		sum(b.price) total_amt_spent 
+from sales a 
+inner join product b 
+	on a.product_id=b.product_id
 group by a.userid
 
 
 2 ---- How many days has each customer visited zomato?
 
-select userid,count(distinct created_date) distinct_days
+select	userid,
+		count(distinct created_date) distinct_days
 from sales 
 group by userid;
 
 
 3 --- what was the first product purchased by each customer?
 
-select * from
-(select*,rank() over (partition by userid order by created_date ) rnk from sales) a where rnk = 1
+select * 
+from
+	(select *,
+			rank() over (partition by userid order by created_date ) rnk 
+	from sales) a 
+where rnk = 1
 
 
 4 --- what is most purchased item on menu & how many times was it purchased by all customers ?
 
-select userid,count(product_id) cnt from sales where product_id =
-(select top 1 product_id from sales group by product_id order by count(product_id) desc)
+select	userid,
+		count(product_id) cnt 
+from sales 
+where product_id = (select top 1 product_id 
+					from sales 
+					group by product_id 
+					order by count(product_id) desc)
 group by userid
 
 
 5 ---- which item was most popular for each customer?
 
-select * from
-(select *,rank() over(partition by userid order by cnt desc) rnk from
-(select userid,product_id,count(product_id) cnt from sales group by userid,product_id)a)b
+select * 
+from	(select *,rank() over(partition by userid order by cnt desc) rnk 
+		from	(select userid,product_id,count(product_id) cnt 
+				from sales group by userid,product_id)a)b
 where rnk =1
 
 
 6 --- which item was purchased first by customer after they become a member ?
 
-select * from
-(select c.*,rank() over (partition by userid order by created_date ) rnk from
-(select a.userid,a.created_date,a.product_id,b.gold_signup_date from sales a inner join 
-goldusers_signup b on a.userid=b.userid and created_date>=gold_signup_date) c)d where rnk=1;
+select * 
+from	(select c.*,rank() over (partition by userid order by created_date ) rnk 
+		from	(select a.userid,a.created_date,a.product_id,b.gold_signup_date 
+				from sales a 
+				inner join goldusers_signup b 
+					on a.userid=b.userid and created_date>=gold_signup_date) c)d 
+where rnk=1;
 
 
 7 --- which item was purchased just before customer became a member?
 
-select * from
-(select c.*,rank() over (partition by userid order by created_date desc ) rnk from
-(select a.userid,a.created_date,a.product_id,b.gold_signup_date from sales a inner join 
-goldusers_signup b on a.userid=b.userid and created_date<=gold_signup_date) c)d where rnk=1;
+select * 
+from	(select c.*,rank() over (partition by userid order by created_date desc ) rnk 
+		from	(select a.userid,a.created_date,a.product_id,b.gold_signup_date 
+				from sales a 
+				inner join goldusers_signup b 
+					on a.userid=b.userid and created_date<=gold_signup_date) c)d 
+where rnk=1;
 
 
 8 ---- what is total orders and amount spent for each member before they become a member ?
 
-select userid,count(created_date) order_purchased,sum(price) total_amt_spent from
-(select c.*,d.price from
-(select a.userid,a.created_date,a.product_id,b.gold_signup_date from sales a inner join 
-goldusers_signup b on a.userid=b.userid and created_date<=gold_signup_date) c inner join product d on c.product_id=d.product_id)e
+select	userid,
+		count(created_date) order_purchased,
+		sum(price) total_amt_spent 
+from (select c.*,d.price 
+	  from (select a.userid,a.created_date,a.product_id,b.gold_signup_date 
+			from sales a 
+			inner join goldusers_signup b 
+				on a.userid=b.userid and created_date<=gold_signup_date) c 
+			inner join product d 
+				on c.product_id=d.product_id)e
 group by userid;
 
 
@@ -121,22 +148,33 @@ group by userid;
 -- for eg for p1 5rs=1 zomato point,for p2 10rs=zomato point and p3 5rs=1 zomato point  2rs =1zomato point
 ,--calculate points collected by each customers and for which product most points have been given till now.
 
-select userid,sum(total_points)*2.5  total_point_earned from 
-(select e.*,amt/points total_points from 
-(select d.*,case when product_id=1 then 5 when product_id=2 then 2 when product_id=3 then 5 else 0 end as points from 
-(select c.userid,c.product_id,sum(price) amt from 
-(select a.*,b.price from sales a inner join product b on a.product_id=b.product_id)c
-group by userid,product_id)d)e)f group by userid;
+select	userid,
+		sum(total_points)*2.5  total_point_earned 
+from (select e.*,amt/points total_points 
+	  from (select d.*,case when product_id=1 then 5 when product_id=2 then 2 when product_id=3 then 5 else 0 end as points 
+			from (select c.userid,c.product_id,sum(price) amt 
+				  from (select a.*,b.price 
+					    from sales a 
+						inner join product b 
+							on a.product_id=b.product_id)c
+						group by userid,product_id)d)e)f 
+group by userid;
 
 
-select * from
-(select * , rank() over (order by  total_point_earned desc) rnk from
-(select product_id,sum(total_points)  total_point_earned from 
-(select e.*,amt/points total_points from 
-(select d.*,case when product_id=1 then 5 when product_id=2 then 2 when product_id=3 then 5 else 0 end as points from 
-(select c.userid,c.product_id,sum(price) amt from 
-(select a.*,b.price from sales a inner join product b on a.product_id=b.product_id)c
-group by userid,product_id)d)e)f group by product_id)f)g where rnk=1;
+select * 
+from (select * , 
+			 rank() over (order by  total_point_earned desc) rnk 
+	  from (select product_id,sum(total_points)  total_point_earned 
+	        from (select e.*,amt/points total_points 
+			      from (select d.*,case when product_id=1 then 5 when product_id=2 then 2 when product_id=3 then 5 else 0 end as points 
+						from (select c.userid,c.product_id,sum(price) amt 
+						      from (select a.*,b.price 
+							        from sales a 
+									inner join product b 
+										on a.product_id=b.product_id)c
+									group by userid,product_id)d)e)f 
+								group by product_id)f)g 
+where rnk=1;
 
 
 
