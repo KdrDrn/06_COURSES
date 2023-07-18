@@ -1,0 +1,24 @@
+Şehir,Satıcı,Satış Tutarı
+ANKARA,Edip Attila,17028
+İSTANBUL,Almina Avcı Özsoy,14478
+ANTALYA,Saime Avıandı,15546
+İZMİR,Nehar Avşar,14365
+YOZGAT,Kaan Muharrem Ay,13976
+MERSİN,Murat Kaan Ayanoglu,14671
+GAZİANTEP,Murat Sinan Ayaz,13351
+TRABZON,Ateş Aycı,18448
+BURSA,Zeynep Nihan Aydınlıoğlu,17503
+ANKARA,Kerime Aydoğan Yozgat,15935
+İSTANBUL,Hami Aydoğdu,17358
+ANTALYA,Thomas Aygen,16432
+İZMİR,Güneş Aykan,12523
+YOZGAT,Elif Feyza Ayrım,15062
+MERSİN,Uğur Ali Aysal,17653
+GAZİANTEP,Osman Yasin Aysan,14511
+TRABZON,Adem Ayvacık,16344
+BURSA,Sera Cansın Azbay,16863
+ANKARA,Ali İsmail Babacan,13298
+İSTANBUL,Ruhugül Babadostu,18439
+ANTALYA,Alçiçek Bad,12845
+İZMİR,Memet Bağcı,13818
+YOZGAT,Mercan Bağçivan,13564
