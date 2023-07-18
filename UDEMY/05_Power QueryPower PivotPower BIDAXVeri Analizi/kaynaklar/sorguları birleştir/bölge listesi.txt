@@ -1,0 +1,10 @@
+Şehir,Bölge
+ANKARA,İç Anadolu
+İSTANBUL,Marmara
+ANTALYA,Akdeniz
+İZMİR,Ege
+YOZGAT,İç Anadolu
+MERSİN,Akdeniz
+GAZİANTEP,Güneydoğu
+TRABZON,Karadeniz
+BURSA,Marmara
